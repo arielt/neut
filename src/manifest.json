@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "Neut",
+  "description": "Neut agent for Chrome browser",
+  "version": "0.1",
+
+  "browser_action": {
+    "default_icon": "neut.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}
