@@ -6,8 +6,8 @@
   "version": "0.1",
 
   "browser_action": {
-    "default_icon": "neut.png",
-    "default_popup": "popup.html"
+    "default_icon": "img/neut.png",
+    "default_popup": "src/popup.html"
   },
   "permissions": [
     "activeTab",

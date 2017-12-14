@@ -8,4 +8,4 @@
 
 * Click Load unpacked extension… to pop up a file-selection dialog.
 
-* Navigate to the src directory and select it.
+* Navigate to the repo directory and select it.
