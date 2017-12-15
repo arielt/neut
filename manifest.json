@@ -2,6 +2,7 @@
   "name": "Neut",
   "description": "Neut agent for Chrome browser",
   "version": "0.1",
+  "default_locale": "en",
   "icons": {"128": "img/neut.png"},
   "background": {
     "persistent": false,
