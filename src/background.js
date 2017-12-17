@@ -21,5 +21,5 @@ eventList.forEach(function(e) {
 chrome.runtime.onStartup.addListener(function() {
   // Don't reset navigation state on startup, we want to preserve data between
   // sessions.
-  // nav.resetDataStorage();
+  nav.resetDataStorage();
 });
