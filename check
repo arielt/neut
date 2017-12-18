@@ -1,4 +1,4 @@
 #!/bin/bash
 
-jslint '**/*.js'
-
+jsLint src/popup.js
+jsLint src/background.js

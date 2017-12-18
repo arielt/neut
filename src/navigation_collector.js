@@ -330,7 +330,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onCompletedListener_: function(data) {
-        // don't process specific url
+        // don't process specific urls, e.g. about:blank
         if (data.url in filteredOutURLs) {
             return;
         }
@@ -351,6 +351,7 @@ NavigationCollector.prototype = {
               transitionType: this.pending_[id].transitionType,
               url: data.url
             });*/
+            console.log("Completed " + data.url);
             // push to completed by host
             this.completed_[getHostnameFromURL(data.url)].push({
                 duration: (data.timeStamp - this.pending_[id].start),
