@@ -1,3 +1,13 @@
+// console log will be seen in dev console of the popup
+
+var mydata = [
+    {
+        "host": "sdfsdf",
+        "requests": 15,
+        "time": 16
+    }
+];
+
 chrome.runtime.sendMessage(
     {'type': 'getMostRequestedUrls'},
     function generateList(response) {
@@ -22,4 +32,8 @@ chrome.runtime.sendMessage(
       }
       section.innerHTML = '';
       section.appendChild(ol);
+      console.log($('#hosts-table'));
+      $('#hosts-table').bootstrapTable({
+		    data: mydata
+	    })
     });

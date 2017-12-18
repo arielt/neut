@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" style="min-width:300px;">
   <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- bootstrap: 3.3.7
+         bootstrap-table: 1.11.1
+    -->
+    <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="bootstrap-table.min.css" rel="stylesheet" type="text/css">
     <link href="popup.css" rel="stylesheet" type="text/css">
   </head>
 
@@ -11,12 +14,37 @@
       <h4 class="center">Neut for Chrome</h4>
       <hr>
       <div class="panel panel-primary">
-        <div class="panel-heading center">Most used URLs</div>
+        <div class="panel-heading center">Most used hosts</div>
         <div class="panel-body">
+          <!-- table -->
+          <table class="table table-striped" id="hosts-table">
+            <thead>
+              <tr>
+                <th>Host</th>
+                <th>Requests</th>
+                <th>Avg load time (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>google.com</td>
+                <td class="center">54</td>
+                <td class="center">135</td>
+              </tr>
+            </tbody>
+          </table>
+
           <section></section>
-          <script src="popup.js"></script>
         </div>
       </div>
     </div> <!-- /container -->
+
+    <!-- scripts -->
+    <script src="jquery-3.2.1.slim.min.js"></script>
+    <script src="tether.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="bootstrap-table.min.js"></script>
+    <script src="popup.js"></script>
+
   </body>
 </html>
