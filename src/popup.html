@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" style="min-width:300px;">
   <head>
-    <!-- bootstrap: 3.3.7
-         bootstrap-table: 1.11.1
-    -->
+    <!-- bootstrap: 3.3.7 -->
     <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="bootstrap-table.min.css" rel="stylesheet" type="text/css">
     <link href="popup.css" rel="stylesheet" type="text/css">
   </head>
 
@@ -20,18 +17,12 @@
           <table class="table table-striped" id="hosts-table">
             <thead>
               <tr>
-                <th>Host</th>
-                <th>Requests</th>
-                <th>Avg load time (ms)</th>
+                <th data-field="host">Host</th>
+                <th data-field="requests">Requests</th>
+                <th data-field="time">Load time (ms)</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>google.com</td>
-                <td class="center">54</td>
-                <td class="center">135</td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
 
           <section></section>
@@ -41,9 +32,7 @@
 
     <!-- scripts -->
     <script src="jquery-3.2.1.slim.min.js"></script>
-    <script src="tether.min.js"></script>
     <script src="bootstrap.min.js"></script>
-    <script src="bootstrap-table.min.js"></script>
     <script src="popup.js"></script>
 
   </body>
