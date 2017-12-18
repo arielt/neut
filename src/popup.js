@@ -13,8 +13,10 @@ chrome.runtime.sendMessage(
             $('#hosts-table').find('tbody').append(
                 "<tr><td>" +
                     results[i].url + "</td><td class='center'>" +
-                    results[i].numRequests + "</td><td class='center'>" +
-                    Math.round(results[i].average) + "</td></tr>"
+                    results[i].numRequests +
+                    "</td><td class='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                    Math.round(results[i].average) +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>"
             );
         }
     }
