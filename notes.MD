@@ -31,6 +31,8 @@
 
 * ACL: what hosts to exclude from data sharing
 
+* Evaluate and publish local storage consumption
+
 ## Open questions
 
 * Youtube videos don't trigger onCompleted events, just onHistoryStateUpdated

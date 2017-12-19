@@ -330,12 +330,14 @@ NavigationCollector.prototype = {
      * @private
      */
     onCompletedListener_: function(data) {
+        var id = this.parseId_(data);
+
         // don't process specific urls, e.g. about:blank
         if (data.url in filteredOutURLs) {
+            delete this.pending_[id];
             return;
         }
 
-        var id = this.parseId_(data);
         if (!this.pending_[id]) {
             console.warn(
                 chrome.i18n.getMessage('errorCompletedWithoutPending'),
