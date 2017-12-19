@@ -11,58 +11,46 @@
 var tabUrlDict = (function () {
     var tabs = {},
 
-    queryTabsCallback = function (allTabs) {
-        allTabs && allTabs.forEach(function (tab) {
-            tabs[tab.id] = tab;
-        });
-    },
+        queryTabsCallback = function (allTabs) {
+            if (!allTabs) {
+                return;
+            }
+            var i, tab;
+            for (i = 0; i < allTabs.length; i += 1) {
+                tab = allTabs[i];
+                tabs[tab.id] = tab;
+            }
+        },
 
-    updateTabCallback = function (tabId, changeinfo, tab) {
-        tabs[tabId] = tab;
-    },
+        /*jslint unparam: true*/
+        updateTabCallback = function (tabId, changeinfo, tab) {
+            tabs[tabId] = tab;
+        },
 
-    removeTabCallback = function (tabId, removeinfo) {
-        delete tabs[tabId];
-    };
+        removeTabCallback = function (tabId, removeinfo) {
+            delete tabs[tabId];
+        };
+        /*jslint unparam: false*/
 
     // init
-    chrome.tabs.query({ active: true }, queryTabsCallback);
+    chrome.tabs.query({
+        active: true
+    }, queryTabsCallback);
     chrome.tabs.onUpdated.addListener(updateTabCallback);
     chrome.tabs.onRemoved.addListener(removeTabCallback);
 
     return {
-      contains: function (tabId, url) {
-          if (tabs[tabId].url == url) {
-              return true;
-          }
+        contains: function (tabId, url) {
+            if (tabs[tabId].url === url) {
+                return true;
+            }
 
-         return false;
-      }
+            return false;
+        }
     };
-
- }());
+}());
 
 var nav = new NavigationCollector();
-var eventList = ['onBeforeNavigate',
-                 'onCreatedNavigationTarget',
-                 'onCommitted',
-                 'onCompleted',
-                 'onDOMContentLoaded',
-                 'onErrorOccurred',
-                 // 'onReferenceFragmentUpdated',
-                 'onTabReplaced',
-                 // 'onHistoryStateUpdated'
-                 ];
-
-eventList.forEach(function (e) {
-    chrome.webNavigation[e].addListener(function (data) {
-        if (typeof data) {
-            // console.log(chrome.i18n.getMessage('inHandler'), e, data);
-        } else {
-            // console.error(chrome.i18n.getMessage('inHandlerError'), e);
-        }
-    });
-});
 
 chrome.runtime.onStartup.addListener(function () {
     // Don't reset navigation state on startup, we want to preserve data between

@@ -16,6 +16,10 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
+* make single function that checks URL
+
+* make URL check before any function that pushes to completed_
+
 * take tab, take user facing URL, take hostname from there - correlate with onCompleted, aggregate
   requests with url in tab
   chrome.tabs.get(Id).url - will give an URL
