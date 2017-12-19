@@ -333,10 +333,16 @@ NavigationCollector.prototype = {
     onCompletedListener_: function (data) {
         var id = this.parseId_(data);
 
-        // don't process specific urls, e.g. about:blank
+        // don't process internal URL, e.g. about:blank
         if (data.url in filteredOutURLs) {
             delete this.pending_[id];
             return;
+        }
+
+        // don't process URL that is not in the tab
+        if (!(data.tabId && tabUrlDict.contains(data.tabId, data.url))) {
+          delete this.pending_[id];
+          return;
         }
 
         if (!this.pending_[id]) {
@@ -346,17 +352,6 @@ NavigationCollector.prototype = {
                 data
             );
         } else {
-            /*
-            this.completed_[data.url].push({
-              duration: (data.timeStamp - this.pending_[id].start),
-              openedInNewWindow: this.pending_[id].openedInNewWindow,
-              source: this.pending_[id].source,
-              transitionQualifiers: this.pending_[id].transitionQualifiers,
-              transitionType: this.pending_[id].transitionType,
-              url: data.url
-            });*/
-            console.log("Completed " + data.url);
-            // push to completed by host
             this.completed_[getHostnameFromURL(data.url)].push({
                 duration: (data.timeStamp - this.pending_[id].start),
                 openedInNewWindow: this.pending_[id].openedInNewWindow,

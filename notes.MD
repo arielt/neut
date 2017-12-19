@@ -2,6 +2,18 @@
 
 * Logo: Font Masque, Color 28B573
 
+Debug Chrome local storage
+
+```
+chrome.storage.local.get("completed", function (result) {
+    console.log(result);
+});
+
+chrome.storage.local.get("errored", function (result) {
+    console.log(result);
+});
+```
+
 ## TODOs
 
 * take tab, take user facing URL, take hostname from there - correlate with onCompleted, aggregate

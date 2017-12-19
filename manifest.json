@@ -13,8 +13,9 @@
     "default_popup": "src/popup.html"
   },
   "permissions": [
-    "webNavigation",
-    "storage"
+    "storage",
+    "tabs",
+    "webNavigation"
   ],
   "manifest_version": 2
 }
