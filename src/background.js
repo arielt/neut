@@ -3,6 +3,7 @@
 /*jslint browser:true*/
 /*global chrome, $, jQuery, alert, NavigationCollector*/
 
+/*jslint unparam: true*/
 /*
  * --------------------------------------------------
  * Dictionary of tabs
@@ -22,7 +23,6 @@ var tabUrlDict = (function () {
             }
         },
 
-        /*jslint unparam: true*/
         updateTabCallback = function (tabId, changeinfo, tab) {
             tabs[tabId] = tab;
         },
@@ -30,7 +30,6 @@ var tabUrlDict = (function () {
         removeTabCallback = function (tabId, removeinfo) {
             delete tabs[tabId];
         };
-        /*jslint unparam: false*/
 
     // init
     chrome.tabs.query({
@@ -41,6 +40,10 @@ var tabUrlDict = (function () {
 
     return {
         contains: function (tabId, url) {
+            if (!tabId) {
+                return false;
+            }
+
             if (tabs[tabId].url === url) {
                 return true;
             }
@@ -49,6 +52,7 @@ var tabUrlDict = (function () {
         }
     };
 }());
+/*jslint unparam: false*/
 
 var nav = new NavigationCollector();
 
