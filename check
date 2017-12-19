@@ -2,3 +2,4 @@
 
 jsLint src/popup.js
 jsLint src/background.js
+jsLint src/navigation_collector.js

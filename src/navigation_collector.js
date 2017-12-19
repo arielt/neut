@@ -3,7 +3,7 @@
 /*global chrome*/
 /*jslint nomen: true*/  // varibles with _
 
-const RES_SIZE = 10; // response size
+var RES_SIZE = 10; // response size
 
 var filteredOutURLs = {
     "about:blank": true,
@@ -139,8 +139,8 @@ NavigationCollector.prototype = {
      *     that these will be unique across a single navigation event.
      * @private
      */
-    parseId_: function(data) {
-        return data.tabId + '-' + (data.frameId ? data.frameId : 0);
+    parseId_: function (data) {
+        return data.tabId + '-' + (data.frameId || 0);
     },
     /**
      * Creates an empty entry in the pending array if one doesn't already exist,
@@ -150,7 +150,7 @@ NavigationCollector.prototype = {
      * @param {!string} id The request's ID, as produced by parseId_.
      * @param {!string} url The request's URL.
      */
-    prepareDataStorage_: function(id, url) {
+    prepareDataStorage_: function (id, url) {
         this.pending_[id] = this.pending_[id] || {
             openedInNewTab: false,
             source: {
@@ -168,11 +168,11 @@ NavigationCollector.prototype = {
      * Retrieves our saved data from storage.
      * @private
      */
-    loadDataStorage_: function() {
+    loadDataStorage_: function () {
         chrome.storage.local.get({
             "completed": {},
             "errored": {},
-        }, function(storage) {
+        }, function (storage) {
             this.completed_ = storage.completed;
             this.errored_ = storage.errored;
         }.bind(this));
@@ -181,7 +181,7 @@ NavigationCollector.prototype = {
      * Persists our state to the storage API.
      * @private
      */
-    saveDataStorage_: function() {
+    saveDataStorage_: function () {
         chrome.storage.local.set({
             "completed": this.completed_,
             "errored": this.errored_,
@@ -190,7 +190,7 @@ NavigationCollector.prototype = {
     /**
      * Resets our saved state to empty.
      */
-    resetDataStorage: function() {
+    resetDataStorage: function () {
         this.completed_ = {};
         this.errored_ = {};
         this.saveDataStorage_();
@@ -209,7 +209,7 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onCreatedNavigationTargetListener_: function(data) {
+    onCreatedNavigationTargetListener_: function (data) {
         var id = this.parseId_(data);
         this.prepareDataStorage_(id, data.url);
         this.pending_[id].openedInNewTab = data.tabId;
@@ -226,7 +226,7 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onBeforeNavigateListener_: function(data) {
+    onBeforeNavigateListener_: function (data) {
         var id = this.parseId_(data);
         this.prepareDataStorage_(id, data.url);
         this.pending_[id].start = this.pending_[id].start || data.timeStamp;
@@ -241,13 +241,14 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onCommittedListener_: function(data) {
+    onCommittedListener_: function (data) {
         var id = this.parseId_(data);
         if (!this.pending_[id]) {
             console.warn(
                 chrome.i18n.getMessage('errorCommittedWithoutPending'),
                 data.url,
-                data);
+                data
+            );
         } else {
             this.prepareDataStorage_(id, data.url);
             this.pending_[id].transitionType = data.transitionType;
@@ -265,7 +266,7 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onReferenceFragmentUpdatedListener_: function(data) {
+    onReferenceFragmentUpdatedListener_: function (data) {
         var id = this.parseId_(data);
         if (!this.pending_[id]) {
             this.completed_[getHostnameFromURL(data.url)] = this.completed_[getHostnameFromURL(data.url)] || [];
@@ -298,7 +299,7 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onHistoryStateUpdatedListener_: function(data) {
+    onHistoryStateUpdatedListener_: function (data) {
         var id = this.parseId_(data);
         if (!this.pending_[id]) {
             this.completed_[getHostnameFromURL(data.url)] = this.completed_[getHostnameFromURL(data.url)] || [];
@@ -329,7 +330,7 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onCompletedListener_: function(data) {
+    onCompletedListener_: function (data) {
         var id = this.parseId_(data);
 
         // don't process specific urls, e.g. about:blank
@@ -342,7 +343,8 @@ NavigationCollector.prototype = {
             console.warn(
                 chrome.i18n.getMessage('errorCompletedWithoutPending'),
                 data.url,
-                data);
+                data
+            );
         } else {
             /*
             this.completed_[data.url].push({
@@ -375,13 +377,14 @@ NavigationCollector.prototype = {
      * @param {!Object} data The event data generated for this request.
      * @private
      */
-    onErrorOccurredListener_: function(data) {
+    onErrorOccurredListener_: function (data) {
         var id = this.parseId_(data);
         if (!this.pending_[id]) {
             console.error(
                 chrome.i18n.getMessage('errorErrorOccurredWithoutPending'),
                 data.url,
-                data);
+                data
+            );
         } else {
             this.prepareDataStorage_(id, data.url);
             this.errored_[data.url].push({
@@ -405,13 +408,14 @@ NavigationCollector.prototype = {
      * @param {!function} sendResponse Function to call to send a response.
      * @private
      */
-    onMessageListener_: function(message, sender, sendResponse) {
-        if (message.type === 'getMostRequestedUrls')
+    onMessageListener_: function (message, sender, sendResponse) {
+        if (message.type === 'getMostRequestedUrls') {
             sendResponse({
                 result: this.getMostRequestedUrls(RES_SIZE)
             });
-        else
+        } else {
             sendResponse({});
+        }
     },
     ///////////////////////////////////////////////////////////////////////////////
     /**
