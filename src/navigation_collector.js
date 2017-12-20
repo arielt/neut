@@ -18,6 +18,8 @@ function getHostnameFromURL(url) {
     return e.hostname;
 }
 
+/*jslint unparam: true*/
+
 /**
  * Collects navigation events, and provides a list of successful requests
  * that you can do interesting things with. Calling the constructor will
@@ -126,7 +128,7 @@ NavigationCollector.NavigationQualifier = {
  *     openedInNewTab: boolean, source: {frameId: ?number, tabId: ?number},
  *     duration: number}}
  */
-NavigationCollector.Request;
+NavigationCollector.Request = {};
 ///////////////////////////////////////////////////////////////////////////////
 NavigationCollector.prototype = {
     /**
@@ -268,23 +270,7 @@ NavigationCollector.prototype = {
      */
     onReferenceFragmentUpdatedListener_: function (data) {
         var id = this.parseId_(data);
-        if (!this.pending_[id]) {
-            /* don't push to completed - too noisy
-            this.completed_[getHostnameFromURL(data.url)] = this.completed_[getHostnameFromURL(data.url)] || [];
-            this.completed_[getHostnameFromURL(data.url)].push({
-                duration: 0,
-                openedInNewWindow: false,
-                source: {
-                    frameId: null,
-                    tabId: null
-                },
-                transitionQualifiers: data.transitionQualifiers,
-                transitionType: data.transitionType,
-                url: data.url
-            });
-            this.saveDataStorage_();
-            */
-        } else {
+        if (this.pending_[id]) {
             this.prepareDataStorage_(id, data.url);
             this.pending_[id].transitionType = data.transitionType;
             this.pending_[id].transitionQualifiers =
@@ -303,23 +289,7 @@ NavigationCollector.prototype = {
      */
     onHistoryStateUpdatedListener_: function (data) {
         var id = this.parseId_(data);
-        if (!this.pending_[id]) {
-            /* don't push to completed - too noisy
-            this.completed_[getHostnameFromURL(data.url)] = this.completed_[getHostnameFromURL(data.url)] || [];
-            this.completed_[getHostnameFromURL(data.url)].push({
-                duration: 0,
-                openedInNewWindow: false,
-                source: {
-                    frameId: null,
-                    tabId: null
-                },
-                transitionQualifiers: data.transitionQualifiers,
-                transitionType: data.transitionType,
-                url: data.url
-            });
-            this.saveDataStorage_();
-            */
-        } else {
+        if (this.pending_[id]) {
             this.prepareDataStorage_(id, data.url);
             this.pending_[id].transitionType = data.transitionType;
             this.pending_[id].transitionQualifiers =
@@ -337,7 +307,7 @@ NavigationCollector.prototype = {
     onCompletedListener_: function (data) {
         var id = this.parseId_(data);
 
-        if (!data || (data.url in filteredOutURLs) || !tabUrlDict.contains(data.tabId, data.url)) {
+        if (!data || (filteredOutURLs[data.url]) || (!tabUrlDict.contains(data.tabId, data.url))) {
             delete this.pending_[id];
             return;
         }
@@ -417,6 +387,9 @@ NavigationCollector.prototype = {
     get completed() {
         return this.completed_;
     },
+    set completed(value) {
+        this.completed_ = value;
+    },
     /**
      * @return {Object<string, Navigationcollector.Request>} The complete list of
      *     unsuccessful navigation requests.
@@ -487,3 +460,5 @@ NavigationCollector.prototype = {
         return num ? result.slice(0, num) : result;
     }
 };
+
+/*jslint unparam: false*/

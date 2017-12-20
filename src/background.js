@@ -40,7 +40,7 @@ var tabUrlDict = (function () {
 
     return {
         contains: function (tabId, url) {
-            if (!tabId) {
+            if (!(tabId && tabs[tabId])) {
                 return false;
             }
 

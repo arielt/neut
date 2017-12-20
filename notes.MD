@@ -24,6 +24,8 @@ chrome.storage.local.get("errored", function (result) {
 
 * make URL check before any function that pushes to completed_ DONE
 
+* consider only active tabs - multiple tabs loading in background in quite slow
+
 * take tab, take user facing URL, take hostname from there - correlate with onCompleted, aggregate
   requests with url in tab
   chrome.tabs.get(Id).url - will give an URL
