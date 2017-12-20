@@ -1,6 +1,6 @@
 "use strict";
 /*jslint browser:true */
-/*global chrome*/
+/*global chrome, tabUrlDict*/
 /*jslint nomen: true*/  // varibles with _
 
 var RES_SIZE = 10; // response size
@@ -436,6 +436,9 @@ NavigationCollector.prototype = {
     getMostFrequentUrls_: function(list, num) {
         var result = [];
         var avg;
+        var last;
+        var prev;
+        var delta;
         // Convert the 'completed_' object to an array.
         for (var x in list) {
             avg = 0;
@@ -444,10 +447,18 @@ NavigationCollector.prototype = {
                     avg += o.duration;
                 });
                 avg = avg / list[x].length;
+                last = list[x][list[x].length - 1].duration; // last load
+                prev = list[x][list[x].length - 2]; // load before last
+                if (prev) {
+                  delta = (last - prev.duration);
+                } else {
+                  delta = 0;
+                }
                 result.push({
                     url: x,
                     numRequests: list[x].length,
-                    requestList: list[x],
+                    last: last,
+                    delta: delta,
                     average: avg
                 });
             }

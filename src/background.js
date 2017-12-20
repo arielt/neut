@@ -56,8 +56,8 @@ var tabUrlDict = (function () {
 
 var nav = new NavigationCollector();
 
+/* don't reset the storage on browser start
 chrome.runtime.onStartup.addListener(function () {
-    // Don't reset navigation state on startup, we want to preserve data between
-    // sessions.
     nav.resetDataStorage();
 });
+*/

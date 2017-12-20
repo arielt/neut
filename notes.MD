@@ -16,34 +16,9 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
-* Don't write empty rows to completed
+* Most visited hosts vs LRU hosts
 
-* Don't write empty rows to error
-
-* make single function that checks URL DONE
-
-* make URL check before any function that pushes to completed_ DONE
-
-* consider only active tabs - multiple tabs loading in background in quite slow
-
-* take tab, take user facing URL, take hostname from there - correlate with onCompleted, aggregate
-  requests with url in tab
-  chrome.tabs.get(Id).url - will give an URL
-  need to add tab permission to manifest DONE
-
-  Why? User has typed URL. He'd be wondering what is notifications.google.com, clients5.google.com e.t.c.
-
-
-* log or note when records are added to the data store to understand what's tracked - DONE, log in navigation collector,
-  open from chrome::/extensions
-
-* TODO: top 10 URLs DONE
-
-* TODO: put URL results in the table DONE
-
-* TODO: aggregate URLs to hosts: most visited hosts DONE
-
-* TODO: Javascript linter DONE
+* Consider only active tabs - multiple tabs loading in background in quite slow
 
 * TODO: HTML linter
 
@@ -51,12 +26,8 @@ chrome.storage.local.get("errored", function (result) {
 
 * User-editable ACL: what hosts to exclude from data collection
 
-* ACL: what hosts to exclude from data sharing
+* Reset local data
 
 * Evaluate and publish local storage consumption
 
 ## Open questions
-
-* Youtube videos don't trigger onCompleted events, just onHistoryStateUpdated
-
-* How to confirm request is genuine
