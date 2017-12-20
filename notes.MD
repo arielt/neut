@@ -16,7 +16,7 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
-* Most visited hosts vs LRU hosts
+* Most visited sites vs LRU sites
 
 * Consider only active tabs - multiple tabs loading in background in quite slow
 
