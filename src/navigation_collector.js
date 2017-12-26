@@ -3,7 +3,7 @@
 /*global chrome, tabUrlDict*/
 /*jslint nomen: true*/  // varibles with _
 
-var RES_SIZE = 10; // response size
+var RES_SIZE = 7; // response size
 
 var filteredOutURLs = {
     "about:blank": true,
@@ -447,8 +447,9 @@ NavigationCollector.prototype = {
                 queries_count = queries.length;
                 avg = 0;
                 for (q = 0; q < queries_count; q += 1) {
-                    avg += queries[q];
+                    avg += queries[q].duration;
                 }
+                console.log(avg);
                 avg = avg / queries_count;
                 last = queries[queries_count - 1].duration; // last load
                 prev = queries[queries_count - 2]; // load before last
