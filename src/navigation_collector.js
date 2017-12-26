@@ -8,7 +8,9 @@ var RES_SIZE = 10; // response size
 var filteredOutURLs = {
     "about:blank": true,
     "about:srcdoc": true,
-    "chrome://extensions/": true
+    "chrome://extensions/": true,
+    "history": true,
+    "": true
 };
 
 // get hostname from URL
@@ -397,6 +399,9 @@ NavigationCollector.prototype = {
     get errored() {
         return this.errored_;
     },
+    set errored(value) {
+        this.errored_ = value;
+    },
     /**
      * Get a list of the X most requested URLs.
      *
@@ -406,7 +411,7 @@ NavigationCollector.prototype = {
      * @return {Object<string, NavigationCollector.Request>} The list of
      *     successful navigation requests, sorted in decending order of frequency.
      */
-    getMostRequestedUrls: function(num) {
+    getMostRequestedUrls: function (num) {
         return this.getMostFrequentUrls_(this.completed, num);
     },
     /**
@@ -419,7 +424,7 @@ NavigationCollector.prototype = {
      *     unsuccessful navigation requests, sorted in decending order
      *     of frequency.
      */
-    getMostErroredUrls: function(num) {
+    getMostErroredUrls: function (num) {
         return this.getMostErroredUrls_(this.errored, num);
     },
     /**
@@ -433,30 +438,28 @@ NavigationCollector.prototype = {
      *     navigation requests, sorted in decending order of frequency.
      * @private
      */
-    getMostFrequentUrls_: function(list, num) {
-        var result = [];
-        var avg;
-        var last;
-        var prev;
-        var delta;
+    getMostFrequentUrls_: function (list, num) {
+        var result = [], avg, last, prev, delta, site, q, queries, queries_count;
         // Convert the 'completed_' object to an array.
-        for (var x in list) {
-            avg = 0;
-            if (list.hasOwnProperty(x) && list[x].length) {
-                list[x].forEach(function(o) {
-                    avg += o.duration;
-                });
-                avg = avg / list[x].length;
-                last = list[x][list[x].length - 1].duration; // last load
-                prev = list[x][list[x].length - 2]; // load before last
+        for (site in list) {
+            if (list.hasOwnProperty(site) && list[site].length) {
+                queries = list[site];
+                queries_count = queries.length;
+                avg = 0;
+                for (q = 0; q < queries_count; q += 1) {
+                    avg += queries[q];
+                }
+                avg = avg / queries_count;
+                last = queries[queries_count - 1].duration; // last load
+                prev = queries[queries_count - 2]; // load before last
                 if (prev) {
-                  delta = (last - prev.duration);
+                    delta = (last - prev.duration);
                 } else {
-                  delta = 0;
+                    delta = 0;
                 }
                 result.push({
-                    url: x,
-                    numRequests: list[x].length,
+                    url: site,
+                    numRequests: queries_count,
                     last: last,
                     delta: delta,
                     average: avg
@@ -464,7 +467,7 @@ NavigationCollector.prototype = {
             }
         }
         // Sort the array.
-        result.sort(function(a, b) {
+        result.sort(function (a, b) {
             return b.numRequests - a.numRequests;
         });
         // Return the requested number of results.
