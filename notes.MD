@@ -1,8 +1,12 @@
 # Notes
 
-* Logo: Font Masque, Color 28B573
+* http://www.picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html
 
-Debug Chrome local storage
+  Logo: Font Masque, Color 28B573 (greenish)
+
+  Primary color: #337ab7, Font: ethnocentric
+
+* Debug Chrome local storage
 
 ```
 chrome.storage.local.get("completed", function (result) {
@@ -16,7 +20,19 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
+* track memory usage
+
+* track storage usage
+
+* rethink representation of current entry
+
+* compress everything between switches of active tab as single visit - because
+  workig with single site picturepeople generates more requests than visiting
+  info sites
+
 * HTML linter
+
+* JS documentation generation - jsdoc: https://npmcompare.com/compare/documentation,esdoc,jsdoc
 
 * autoupdate: https://developer.chrome.com/apps/autoupdate
 
