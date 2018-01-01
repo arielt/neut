@@ -10,6 +10,27 @@
     <div class="container">
       <h4 class="center">Neut for Chrome</h4>
       <hr>
+
+
+      <div class="panel panel-primary">
+        <div class="panel-heading center">Current site</div>
+        <div class="panel-body">
+          <!-- table -->
+          <table class="table table-striped" id="current-table">
+            <thead>
+              <tr>
+                <th data-field="host">Site</th>
+                <th data-field="requests" class="center">Requests</th>
+                <th data-field="avg-time" class="center">Avg load time (seconds)</th>
+                <th data-field="time" class="center">Last load time (seconds)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+
       <div class="panel panel-primary">
         <div class="panel-heading center">Most visited sites</div>
         <div class="panel-body">
@@ -25,8 +46,6 @@
             </thead>
             <tbody></tbody>
           </table>
-
-          <section></section>
         </div>
       </div>
     </div> <!-- /container -->

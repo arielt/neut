@@ -3,7 +3,7 @@
 /*global chrome, tabUrlDict*/
 /*jslint nomen: true*/  // varibles with _
 
-var RES_SIZE = 7; // response size
+var RES_SIZE = 5; // response size
 
 var filteredOutURLs = {
     "about:blank": true,
@@ -427,6 +427,9 @@ NavigationCollector.prototype = {
     getMostErroredUrls: function (num) {
         return this.getMostErroredUrls_(this.errored, num);
     },
+    getActiveSite: function () {
+        return this.getActiveSite_(this.completed);
+    },
     /**
      * Get a list of the most frequent URLs in a list.
      *
@@ -438,18 +441,18 @@ NavigationCollector.prototype = {
      *     navigation requests, sorted in decending order of frequency.
      * @private
      */
-    getMostFrequentUrls_: function (list, num) {
+    getMostFrequentUrls_: function (sites, num) {
         var result = [], avg, last, prev, delta, site, q, queries, queries_count;
+
         // Convert the 'completed_' object to an array.
-        for (site in list) {
-            if (list.hasOwnProperty(site) && list[site].length) {
-                queries = list[site];
+        for (site in sites) {
+            if (sites.hasOwnProperty(site) && sites[site].length) {
+                queries = sites[site];
                 queries_count = queries.length;
                 avg = 0;
                 for (q = 0; q < queries_count; q += 1) {
                     avg += queries[q].duration;
                 }
-                console.log(avg);
                 avg = avg / queries_count;
                 last = queries[queries_count - 1].duration; // last load
                 prev = queries[queries_count - 2]; // load before last
@@ -473,6 +476,9 @@ NavigationCollector.prototype = {
         });
         // Return the requested number of results.
         return num ? result.slice(0, num) : result;
+    },
+    getActiveSite_: function (sites) {
+        return sites[tabUrlDict.activeUrl];
     }
 };
 

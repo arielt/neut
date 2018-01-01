@@ -12,33 +12,28 @@
 var tabUrlDict = (function () {
     var tabs = {},
 
-        queryTabsCallback = function (allTabs) {
-            if (!allTabs) {
-                return;
-            }
-            var i, tab;
-            for (i = 0; i < allTabs.length; i += 1) {
-                tab = allTabs[i];
-                tabs[tab.id] = tab;
+        activeTabId = null, // track active tab here
+
+        onUpdated = function (tabId, changeinfo, tab) {
+            if (tabId === activeTabId) {
+                tabs[tabId] = tab;
             }
         },
 
-        updateTabCallback = function (tabId, changeinfo, tab) {
-            tabs[tabId] = tab;
-        },
-
-        removeTabCallback = function (tabId, removeinfo) {
+        onRemoved = function (tabId, removeinfo) {
             delete tabs[tabId];
+        },
+
+        onActivated = function (activeInfo) {
+            activeTabId = activeInfo.tabId;
         };
 
-    // init
-    chrome.tabs.query({
-        active: true
-    }, queryTabsCallback);
-    chrome.tabs.onUpdated.addListener(updateTabCallback);
-    chrome.tabs.onRemoved.addListener(removeTabCallback);
+    chrome.tabs.onUpdated.addListener(onUpdated);
+    chrome.tabs.onRemoved.addListener(onRemoved);
+    chrome.tabs.onActivated.addListener(onActivated);
 
     return {
+        // checks if dict has information about tab with corresponding URL
         contains: function (tabId, url) {
             if (!(tabId && tabs[tabId])) {
                 return false;
@@ -49,6 +44,10 @@ var tabUrlDict = (function () {
             }
 
             return false;
+        },
+        // retuns URL of active tab
+        activeUrl: function () {
+            return tabs[activeTabId].url;
         }
     };
 }());

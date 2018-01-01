@@ -16,13 +16,15 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
+* UI: add disclaimer - all times are in seconds
+
 * Most visited sites vs LRU sites
 
 * Consider only active tabs - multiple tabs loading in background in quite slow
 
-* TODO: HTML linter
+* HTML linter
 
-* TODO: autoupdate: https://developer.chrome.com/apps/autoupdate
+* autoupdate: https://developer.chrome.com/apps/autoupdate
 
 * User-editable ACL: what hosts to exclude from data collection
 
