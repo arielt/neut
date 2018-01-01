@@ -33,7 +33,7 @@ var tabUrlDict = (function () {
     chrome.tabs.onActivated.addListener(onActivated);
 
     return {
-        // checks if dict has information about tab with corresponding URL
+        // Checks if dict has information about tab with corresponding URL
         contains: function (tabId, url) {
             if (!(tabId && tabs[tabId])) {
                 return false;
@@ -45,9 +45,12 @@ var tabUrlDict = (function () {
 
             return false;
         },
-        // retuns URL of active tab
-        activeUrl: function () {
-            return tabs[activeTabId].url;
+        // Returns URL of active tab
+        activeTabUrl: function () {
+            if (tabs[activeTabId]) {
+                return tabs[activeTabId].url;
+            }
+            return null;
         }
     };
 }());

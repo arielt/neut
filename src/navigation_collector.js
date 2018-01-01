@@ -3,7 +3,7 @@
 /*global chrome, tabUrlDict*/
 /*jslint nomen: true*/  // varibles with _
 
-var RES_SIZE = 5; // response size
+var RES_SIZE = 3; // response size
 
 var filteredOutURLs = {
     "about:blank": true,
@@ -26,7 +26,7 @@ function getHostnameFromURL(url) {
  * Collects navigation events, and provides a list of successful requests
  * that you can do interesting things with. Calling the constructor will
  * automatically bind handlers to the relevant webnavigation API events,
- * and to a `getMostRequestedUrls` extension message for internal
+ * and to a `getMostRequestedSites` extension message for internal
  * communication between background pages and popups.
  *
  * @constructor
@@ -373,11 +373,18 @@ NavigationCollector.prototype = {
      * @private
      */
     onMessageListener_: function (message, sender, sendResponse) {
-        if (message.type === 'getMostRequestedUrls') {
+        switch (message.type) {
+        case 'getMostRequestedSites':
             sendResponse({
-                result: this.getMostRequestedUrls(RES_SIZE)
+                result: this.getMostRequestedSites(RES_SIZE)
             });
-        } else {
+            break;
+        case 'getActiveSite':
+            sendResponse({
+                result: this.getActiveSite()
+            });
+            break;
+        default:
             sendResponse({});
         }
     },
@@ -411,7 +418,7 @@ NavigationCollector.prototype = {
      * @return {Object<string, NavigationCollector.Request>} The list of
      *     successful navigation requests, sorted in decending order of frequency.
      */
-    getMostRequestedUrls: function (num) {
+    getMostRequestedSites: function (num) {
         return this.getMostFrequentUrls_(this.completed, num);
     },
     /**
@@ -430,6 +437,29 @@ NavigationCollector.prototype = {
     getActiveSite: function () {
         return this.getActiveSite_(this.completed);
     },
+    // Calculate query statistics
+    queriesSummary_: function (site, queries) {
+        var q, last, delta, prev, avg = 0, queries_count = queries.length;
+        for (q = 0; q < queries_count; q += 1) {
+            avg += queries[q].duration;
+        }
+        avg = avg / queries_count;
+        last = queries[queries_count - 1].duration; // last load
+        prev = queries[queries_count - 2]; // load before last
+        if (prev) {
+            delta = (last - prev.duration);
+        } else {
+            delta = 0;
+        }
+
+        return {
+            url: site,
+            numRequests: queries_count,
+            last: last,
+            delta: delta,
+            average: avg
+        };
+    },
     /**
      * Get a list of the most frequent URLs in a list.
      *
@@ -442,32 +472,13 @@ NavigationCollector.prototype = {
      * @private
      */
     getMostFrequentUrls_: function (sites, num) {
-        var result = [], avg, last, prev, delta, site, q, queries, queries_count;
+        var result = [], site, queries;
 
         // Convert the 'completed_' object to an array.
         for (site in sites) {
             if (sites.hasOwnProperty(site) && sites[site].length) {
                 queries = sites[site];
-                queries_count = queries.length;
-                avg = 0;
-                for (q = 0; q < queries_count; q += 1) {
-                    avg += queries[q].duration;
-                }
-                avg = avg / queries_count;
-                last = queries[queries_count - 1].duration; // last load
-                prev = queries[queries_count - 2]; // load before last
-                if (prev) {
-                    delta = (last - prev.duration);
-                } else {
-                    delta = 0;
-                }
-                result.push({
-                    url: site,
-                    numRequests: queries_count,
-                    last: last,
-                    delta: delta,
-                    average: avg
-                });
+                result.push(this.queriesSummary_(site, queries));
             }
         }
         // Sort the array.
@@ -477,8 +488,13 @@ NavigationCollector.prototype = {
         // Return the requested number of results.
         return num ? result.slice(0, num) : result;
     },
+    // Get statistics of active site, return null if there is no reliable data
     getActiveSite_: function (sites) {
-        return sites[tabUrlDict.activeUrl];
+        var site = getHostnameFromURL(tabUrlDict.activeTabUrl());
+        if (!(site && sites.hasOwnProperty(site) && sites[site].length)) {
+            return null;
+        }
+        return [this.queriesSummary_(site, sites[site])];
     }
 };
 
