@@ -24,6 +24,10 @@ chrome.storage.local.get("errored", function (result) {
 
 * track storage usage
 
+* filter report data
+
+* show report history
+
 * rethink representation of current entry
 
 * compress everything between switches of active tab as single visit - because
