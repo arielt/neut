@@ -7,7 +7,7 @@
 /*jslint browser:true */
 
 /**
- * Parse url, available fields:
+ * URL parser, available fields:
  *     parser.protocol; // => "http:"
  *     parser.hostname; // => "example.com"
  *     parser.port;     // => "3000"
@@ -23,7 +23,7 @@ function parsedUrl(url) {
 }
 
 var urlFilter = (function () {
-    var filteredOutURLs = {
+    var filteredOutUrls = {
             "about:blank": true,
             "about:srcdoc": true,
         },
@@ -37,7 +37,7 @@ var urlFilter = (function () {
         filter: function (url) {
             console.debug("Check url: " + url);
 
-            if (filteredOutURLs[url]) {
+            if (filteredOutUrls[url]) {
                 console.debug("Filtered out");
                 return true;
             }
