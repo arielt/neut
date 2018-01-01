@@ -4,6 +4,7 @@
 /*global chrome, $, jQuery, alert, NavigationCollector*/
 
 /*jslint unparam: true*/
+
 /*
  * --------------------------------------------------
  * Dictionary of tabs

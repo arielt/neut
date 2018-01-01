@@ -1,17 +1,10 @@
 "use strict";
+
 /*jslint browser:true */
-/*global chrome, tabUrlDict*/
+/*global chrome, tabUrlDict, urlFilter*/
 /*jslint nomen: true*/  // varibles with _
 
 var RES_SIZE = 3; // response size
-
-var filteredOutURLs = {
-    "about:blank": true,
-    "about:srcdoc": true,
-    "chrome://extensions/": true,
-    "history": true,
-    "": true
-};
 
 // get hostname from URL
 function getHostnameFromURL(url) {
@@ -247,6 +240,12 @@ NavigationCollector.prototype = {
      */
     onCommittedListener_: function (data) {
         var id = this.parseId_(data);
+
+        if (urlFilter.filter(data.url)) {
+            delete this.pending_[id];
+            return;
+        }
+
         if (!this.pending_[id]) {
             console.warn(
                 chrome.i18n.getMessage('errorCommittedWithoutPending'),
@@ -309,7 +308,7 @@ NavigationCollector.prototype = {
     onCompletedListener_: function (data) {
         var id = this.parseId_(data);
 
-        if (!data || (filteredOutURLs[data.url]) || (!tabUrlDict.contains(data.tabId, data.url))) {
+        if (urlFilter.filter(data.url) || !tabUrlDict.contains(data.tabId, data.url)) {
             delete this.pending_[id];
             return;
         }
@@ -343,6 +342,13 @@ NavigationCollector.prototype = {
      */
     onErrorOccurredListener_: function (data) {
         var id = this.parseId_(data);
+
+        console.debug(data);
+        if (urlFilter.filter(data.url)) {
+            delete this.pending_[id];
+            return;
+        }
+
         if (!this.pending_[id]) {
             console.error(
                 chrome.i18n.getMessage('errorErrorOccurredWithoutPending'),
