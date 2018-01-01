@@ -13,9 +13,9 @@ chrome.runtime.sendMessage(
             element = "<tr><td>";
             element += results[i].url + "</td><td class='center'>";
             element += results[i].numRequests;
-            element += "</td><td class='center'>&nbsp;&nbsp;&nbsp;&nbsp;";
+            element += "</td><td class='center'>";
             element += (results[i].average / 1000).toFixed(2);
-            element += "&nbsp;&nbsp;&nbsp;&nbsp;</td><td class='center' style='white-space:nowrap;'>";
+            element += "</td><td class='center' style='white-space:nowrap;'>";
             element += (results[i].last / 1000).toFixed(2);
             if (results[i].delta > 0) {
                 element += "<p class='text-warning text-muted' style='display:inline'><small> +";
