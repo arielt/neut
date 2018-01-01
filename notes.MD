@@ -20,15 +20,7 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
-* add URL parser
-
-* sort out filtered stuff: URL
-
 * fix youtube tracking
-
-* introduce log level
-
-* fix redirect bug: search 'javascript url parser' -> https://gist.github.com/jlong/2428561
 
 * track memory usage
 

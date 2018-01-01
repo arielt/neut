@@ -6,13 +6,6 @@
 
 var RES_SIZE = 3; // response size
 
-// get hostname from URL
-function getHostnameFromURL(url) {
-    var e = document.createElement("a");
-    e.href = url;
-    return e.hostname;
-}
-
 /*jslint unparam: true*/
 
 /**
@@ -158,7 +151,8 @@ NavigationCollector.prototype = {
             transitionQualifiers: [],
             transitionType: null
         };
-        this.completed_[getHostnameFromURL(url)] = this.completed_[getHostnameFromURL(url)] || [];
+        var hostname = urlFilter.parse(url).hostname;
+        this.completed_[hostname] = this.completed_[hostname] || [];
         this.errored_[url] = this.errored_[url] || [];
     },
     /**
@@ -306,7 +300,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onCompletedListener_: function (data) {
-        var id = this.parseId_(data);
+        var site, id = this.parseId_(data);
 
         if (urlFilter.filter(data.url) || !tabUrlDict.contains(data.tabId, data.url)) {
             delete this.pending_[id];
@@ -320,7 +314,8 @@ NavigationCollector.prototype = {
                 data
             );
         } else {
-            this.completed_[getHostnameFromURL(data.url)].push({
+            site = urlFilter.parse(data.url).hostname;
+            this.completed_[site].push({
                 duration: (data.timeStamp - this.pending_[id].start),
                 openedInNewWindow: this.pending_[id].openedInNewWindow,
                 source: this.pending_[id].source,
@@ -496,7 +491,7 @@ NavigationCollector.prototype = {
     },
     // Get statistics of active site, return null if there is no reliable data
     getActiveSite_: function (sites) {
-        var site = getHostnameFromURL(tabUrlDict.activeTabUrl());
+        var site = urlFilter.parse(tabUrlDict.activeTabUrl()).hostname;
         if (!(site && sites.hasOwnProperty(site) && sites[site].length)) {
             return null;
         }

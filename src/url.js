@@ -6,22 +6,6 @@
 
 /*jslint browser:true */
 
-/**
- * URL parser, available fields:
- *     parser.protocol; // => "http:"
- *     parser.hostname; // => "example.com"
- *     parser.port;     // => "3000"
- *     parser.pathname; // => "/pathname/"
- *     parser.search;   // => "?search=test"
- *     parser.hash;     // => "#hash"
- *     parser.host;     // => "example.com:3000"
- */
-function parsedUrl(url) {
-    var parser = document.createElement('a');
-    parser.href = url;
-    return parser;
-}
-
 var urlFilter = (function () {
     var filteredOutUrls = {
             "about:blank": true,
@@ -31,19 +15,37 @@ var urlFilter = (function () {
             "chrome:": true,
             "chrome-devtools:": true,
             "chrome-search:": true,
-        };
+        },
+        parser = document.createElement('a');
 
     return {
+       /**
+        * URL parser, available fields:
+        *     parser.protocol; // => "http:"
+        *     parser.hostname; // => "example.com"
+        *     parser.port;     // => "3000"
+        *     parser.pathname; // => "/pathname/"
+        *     parser.search;   // => "?search=test"
+        *     parser.hash;     // => "#hash"
+        *     parser.host;     // => "example.com:3000"
+        */
+        parse: function (url) {
+            parser.href = url;
+            return parser;
+        },
+        /**
+         * Returns true if URL should not be processed, otherwise false.
+         */
         filter: function (url) {
-            console.debug("Check url: " + url);
+            console.debug("Filter url: " + url);
 
             if (filteredOutUrls[url]) {
-                console.debug("Filtered out");
+                console.debug("URL rejected");
                 return true;
             }
 
-            if (filteredOutProtocols[parsedUrl(url).protocol]) {
-                console.debug("Filtered out");
+            if (filteredOutProtocols[this.parse(url).protocol]) {
+                console.debug("Protocol rejected");
                 return true;
             }
 
