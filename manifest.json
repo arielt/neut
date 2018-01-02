@@ -8,7 +8,7 @@
     },
     "background": {
         "persistent": false,
-        "scripts": ["src/url.js", "src/navigation_collector.js", "src/background.js"]
+        "scripts": ["src/url.js", "src/tab_tracker.js", "src/navigation_collector.js", "src/background.js"]
     },
     "browser_action": {
         "default_icon": "img/neut.png",

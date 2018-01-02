@@ -20,6 +20,8 @@ chrome.storage.local.get("errored", function (result) {
 
 ## TODOs
 
+* introduce tab tracker instead of navigation collector
+
 * fix youtube tracking
 
 * track memory usage

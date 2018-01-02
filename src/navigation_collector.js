@@ -1,7 +1,7 @@
 "use strict";
 
 /*jslint browser:true */
-/*global chrome, tabUrlDict, urlFilter*/
+/*global chrome, tabTracker, urlFilter*/
 /*jslint nomen: true*/  // varibles with _
 
 var RES_SIZE = 3; // response size
@@ -201,6 +201,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onCreatedNavigationTargetListener_: function (data) {
+        console.debug("Event: navigation target created: " + data.url);
         var id = this.parseId_(data);
         this.prepareDataStorage_(id, data.url);
         this.pending_[id].openedInNewTab = data.tabId;
@@ -218,6 +219,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onBeforeNavigateListener_: function (data) {
+        console.debug("Event: before navigate: " + data.url);
         var id = this.parseId_(data);
         this.prepareDataStorage_(id, data.url);
         this.pending_[id].start = this.pending_[id].start || data.timeStamp;
@@ -233,6 +235,8 @@ NavigationCollector.prototype = {
      * @private
      */
     onCommittedListener_: function (data) {
+        console.debug("Event: committed: " + data.url);
+
         var id = this.parseId_(data);
 
         if (urlFilter.filter(data.url)) {
@@ -264,6 +268,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onReferenceFragmentUpdatedListener_: function (data) {
+        console.debug("Event: reference fragment updated: " + data.url);
         var id = this.parseId_(data);
         if (this.pending_[id]) {
             this.prepareDataStorage_(id, data.url);
@@ -283,6 +288,7 @@ NavigationCollector.prototype = {
      * @private
      */
     onHistoryStateUpdatedListener_: function (data) {
+        console.debug("Event: history state updated: " + data.url);
         var id = this.parseId_(data);
         if (this.pending_[id]) {
             this.prepareDataStorage_(id, data.url);
@@ -300,9 +306,10 @@ NavigationCollector.prototype = {
      * @private
      */
     onCompletedListener_: function (data) {
+        console.debug("Event: completed: " + data.url);
         var site, id = this.parseId_(data);
 
-        if (urlFilter.filter(data.url) || !tabUrlDict.contains(data.tabId, data.url)) {
+        if (urlFilter.filter(data.url) || !tabTracker.contains(data.tabId, data.url)) {
             delete this.pending_[id];
             return;
         }
@@ -336,9 +343,9 @@ NavigationCollector.prototype = {
      * @private
      */
     onErrorOccurredListener_: function (data) {
-        var id = this.parseId_(data);
+        console.debug("Event: error occured: " + data.url);
 
-        console.debug(data);
+        var id = this.parseId_(data);
         if (urlFilter.filter(data.url)) {
             delete this.pending_[id];
             return;
@@ -489,9 +496,9 @@ NavigationCollector.prototype = {
         // Return the requested number of results.
         return num ? result.slice(0, num) : result;
     },
-    // Get statistics of active site, return null if there is no reliable data
+    // Get statistics of active site, return null if there is no reliable data.
     getActiveSite_: function (sites) {
-        var site = urlFilter.parse(tabUrlDict.activeTabUrl()).hostname;
+        var site = urlFilter.parse(tabTracker.activeTabUrl()).hostname;
         if (!(site && sites.hasOwnProperty(site) && sites[site].length)) {
             return null;
         }
