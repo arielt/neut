@@ -14,15 +14,17 @@ function perfTime() {
     setTimeout(function () {
         var perf = performance.timing, timing;
 
-        if (perf.loadEventEnd <= 0) {
-            return;
-        }
-
         timing = {
             'connectStart': perf.connectStart,
             'responseEnd': perf.responseEnd,
             'string': JSON.stringify(perf)
         };
+
+        if (perf.loadEventEnd <= 0 ||
+                perf.requestStart < perf.fetchStart ||
+                perf.responseStart < perf.fetchStart) {
+            timing.err = 'browserBug';
+        }
 
         chrome.runtime.sendMessage({
             'type': 'neutTiming',

@@ -4,21 +4,22 @@
  * We assume runtime always exists.
  * We measure only networking part, not including DNS lookup: establishing
  * connection + getting base page.
- * Cache hit considered to be duration < 30 ms.
+ * Reasonable time to load currently is 100 ms, otherwise considered to be
+ * cache hit or bug in browser.
  */
 
 "use strict";
 /*jslint browser:true, todo: true*/
 /*global chrome*/
 
-var CACHE_HIT_TIME = 30;
-var TOP_SITES = 10;
+var REASONABLE_TIME = 100;
+var TOP_SITES = 7;
 
 // in-memory map of hosts
 var hosts = {};
 
 function loadStorageData() {
-    chrome.storage.local.get("hosts", function (result) {
+    chrome.storage.local.get('hosts', function (result) {
         if (result.hosts) {
             hosts = result.hosts;
         }
@@ -26,7 +27,7 @@ function loadStorageData() {
 }
 
 function saveStorageData() {
-    chrome.storage.local.set("hosts", hosts);
+    chrome.storage.local.set({'hosts': hosts});
 }
 
 function updateHosts(msg, duration) {
@@ -75,9 +76,11 @@ chrome.runtime.onMessage.addListener(
         switch (msg.type) {
         case 'neutTiming':
             var duration = msg.timing.responseEnd - msg.timing.connectStart;
-            chrome.browserAction.setBadgeText({text: String((duration / 1000).toFixed(2)), tabId: sender.tab.id});
-            if (duration > CACHE_HIT_TIME) {
+            if (duration > REASONABLE_TIME && msg.timing.err === undefined) {
+                chrome.browserAction.setBadgeText({text: String((duration / 1000).toFixed(2)), tabId: sender.tab.id});
                 updateHosts(msg, duration);
+            } else {
+                chrome.browserAction.setBadgeText({text: '---', tabId: sender.tab.id});
             }
             break;
         case 'topSites':
