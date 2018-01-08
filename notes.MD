@@ -49,11 +49,7 @@ performance.getEntriesByType('resource')
 ```
 chrome.storage.local.get(function(result){console.log(result)})
 
-chrome.storage.local.get("completed", function (result) {
-    console.log(result);
-});
-
-chrome.storage.local.get("errored", function (result) {
+chrome.storage.local.get("hosts", function (result) {
     console.log(result);
 });
 ```

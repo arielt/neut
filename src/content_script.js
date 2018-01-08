@@ -34,9 +34,9 @@ function perfTime() {
 
 if (window.performance && performance.timing && chrome.runtime) {
     // with default run_at, browser chooses when to inject the script
-    if (document.readyState === "complete") {
+    if (document.readyState === 'complete') {
         perfTime();
     } else {
-        window.addEventListener("load", perfTime);
+        window.addEventListener('load', perfTime);
     }
 }
