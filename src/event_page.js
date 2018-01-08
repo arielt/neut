@@ -2,6 +2,9 @@
  * Event page to collect performance reports.
  * Use Chrome runtime to receive messages: https://developer.chrome.com/apps/runtime.
  * We assume runtime always exists.
+ * We measure only networking part, not including DNS lookup: establishing
+ * connection + getting base page.
+ * Cache hit considered to be duration < 30 ms.
  */
 
 "use strict";
@@ -9,12 +12,10 @@
 /*global chrome*/
 
 /*jslint unparam: true*/
-// add listener for content script messages
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        // TODO: process updates
-        console.log("Got update from tab " + sender.tab.id);
-        console.log(request);
+        var duration = String(((request.timing.responseEnd - request.timing.connectStart) / 1000).toFixed(2));
+        chrome.browserAction.setBadgeText({text: duration, tabId: sender.tab.id});
     }
 );
 /*jslint unparam: false*/

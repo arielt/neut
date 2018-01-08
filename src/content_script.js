@@ -1,7 +1,7 @@
 /**
  * Content script to be injected to the loaded page. Runs with default run_at
  * parameter: https://developer.chrome.com/extensions/content_scripts.
- * Performace timing: https://www.w3.org/TR/navigation-timing/.
+ * Timing API: https://www.w3.org/TR/navigation-timing.
  * All page information, including URLs has to be collected by content script.
  */
 
@@ -18,15 +18,8 @@ function perfTime() {
             return;
         }
 
-        // TODO: exclude metrics that are not used in immediate calculation
         timing = {
-            'fetchStart': perf.fetchStart,
-            'domainLookupStart': perf.domainLookupStart,
-            'domainLookupEnd': perf.domainLookupStart,
             'connectStart': perf.connectStart,
-            'connectEnd': perf.connectEnd,
-            'requestStart': perf.requestStart,
-            'responseStart': perf.responseStart,
             'responseEnd': perf.responseEnd,
             'string': JSON.stringify(perf)
         };
