@@ -56,4 +56,5 @@ chrome.storage.local.get("hosts", function (result) {
 
 ## TODOs
 
+* check if requestStart / responseStart < fetchStart - it's a browser bug
 * display storage stats
