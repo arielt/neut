@@ -5,3 +5,5 @@ jsLint src/background.js
 jsLint src/navigation_collector.js
 jsLint src/url.js
 jsLint src/tab_tracker.js
+jsLint src/content_script.js
+jsLint src/event_page.js

@@ -1,5 +1,11 @@
 # Notes
 
+## Components
+
+content_script.js - Content script. https://developer.chrome.com/extensions/content_scripts
+
+event_page.js - Event page. https://developer.chrome.com/extensions/event_pages
+
 ## Timing
 
 networkTime = responseEnd - connectStart
