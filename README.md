@@ -1,7 +1,9 @@
 # Neut-chrome
 
 Lightweight Chrome extension that measures how fast your web pages are loading.
-Designed for for low-power devices.
+Designed for for low-power devices. Includes only network part of the base page load,
+without taking into consideration sub-resources and rendering by browser.
+
 
 ## Install the extension
 

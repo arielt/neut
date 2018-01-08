@@ -25,6 +25,7 @@ function perfTime() {
         };
 
         chrome.runtime.sendMessage({
+            'type': 'neutTiming',
             'hostname': window.location.hostname,
             'timing': timing
         });
