@@ -7,7 +7,7 @@
     },
     "background": {
         "persistent": false,
-        "scripts": ["src/url.js", "src/tab_tracker.js", "src/navigation_collector.js", "src/background.js"]
+        "scripts": ["src/event_page.js"]
     },
     "content_scripts": [{
       "matches": ["*://*/*"],
