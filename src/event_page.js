@@ -4,7 +4,7 @@
  * We assume runtime always exists.
  * We measure only networking part, not including DNS lookup: establishing
  * connection + getting base page.
- * Reasonable time to load currently is 100 ms, otherwise considered to be
+ * Reasonable time to load is 100 ms, otherwise considered to be
  * cache hit or bug in browser.
  */
 
@@ -12,7 +12,7 @@
 /*jslint browser:true, todo: true*/
 /*global chrome*/
 
-var REASONABLE_TIME = 100;
+var DURATION_THRESHOLD = 100;
 var TOP_SITES = 7;
 
 // in-memory map of hosts
@@ -76,11 +76,11 @@ chrome.runtime.onMessage.addListener(
         switch (msg.type) {
         case 'neutTiming':
             var duration = msg.timing.responseEnd - msg.timing.connectStart;
-            if (duration > REASONABLE_TIME && msg.timing.err === undefined) {
+            if (duration > DURATION_THRESHOLD && msg.timing.err === undefined) {
                 chrome.browserAction.setBadgeText({text: String((duration / 1000).toFixed(2)), tabId: sender.tab.id});
                 updateHosts(msg, duration);
             } else {
-                chrome.browserAction.setBadgeText({text: '---', tabId: sender.tab.id});
+                chrome.browserAction.setBadgeText({text: 'Oops', tabId: sender.tab.id});
             }
             break;
         case 'topSites':
