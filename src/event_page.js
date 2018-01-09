@@ -75,8 +75,8 @@ chrome.runtime.onMessage.addListener(
         switch (msg.type) {
         case 'neutTiming':
             var duration = msg.timing.responseEnd - msg.timing.connectStart;
-            if (msg.timing.err != undefined) {
-                chrome.browserAction.setBadgeText({text: 'Oops', tabId: sender.tab.id});
+            if (msg.timing.err !== undefined) {
+                chrome.browserAction.setBadgeText({text: 'Foob', tabId: sender.tab.id});
             } else if (duration < DURATION_THRESHOLD) {
                 chrome.browserAction.setBadgeText({text: 'Hit', tabId: sender.tab.id});
             } else {
