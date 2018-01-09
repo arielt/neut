@@ -65,5 +65,3 @@ chrome.storage.local.get("hosts", function (result) {
 ```
 
 ## TODOs
-
-* display storage stats

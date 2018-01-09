@@ -66,7 +66,8 @@ function topSites() {
         return b.reqNum - a.reqNum;
     });
 
-    return arr.slice(0, TOP_SITES);
+    return {topSites: arr.slice(0, TOP_SITES),
+            sitesNum: Object.keys(hosts).length};
 }
 
 /*jslint unparam: true*/

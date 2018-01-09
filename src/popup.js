@@ -6,9 +6,7 @@
 chrome.runtime.sendMessage(
     {'type': 'topSites'},
     function generateList(response) {
-        console.log("got a response");
-        console.log(response);
-        var i, element, results = response.result;
+        var i, element, results = response.result.topSites;
         for (i = 0; i < results.length; i += 1) {
             element = "<tr><td>";
             element += results[i].host + "</td><td class='center'>";
@@ -20,5 +18,6 @@ chrome.runtime.sendMessage(
             element += "</td></tr>";
             $('#hosts-table').find('tbody').append(element);
         }
+        $('#footer').text("Overall tracking " + response.result.sitesNum + " sites");
     }
 );
