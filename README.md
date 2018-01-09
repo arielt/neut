@@ -1,8 +1,8 @@
 # Neut-chrome
 
-Lightweight Chrome extension that measures how fast your web pages are loading.
+Lightweight extension that measures how fast your web pages are loading.
 Good for low-power devices. Includes only network part of the base page load,
-without taking into consideration sub-resources or rendering by browser.
+without taking into consideration sub-resources or rendering in browser.
 
 Performance timing is not a precise science. Extension
 will show some hints when taken measurements can not be trusted:
@@ -11,4 +11,4 @@ will show some hints when taken measurements can not be trusted:
 
 * Foob - browser bug, measurements don't make too much sense.
 
-Not trusted measurements are not accounted in statistics.
+Not trusted measurements are not included in statistics.
