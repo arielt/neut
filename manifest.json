@@ -3,19 +3,19 @@
     "description": "Neut agent for Chrome browser",
     "version": "0.1",
     "icons": {
-        "128": "img/neut.png"
+        "128": "neut-common/src/neut.png"
     },
     "background": {
         "persistent": false,
-        "scripts": ["src/event_page.js"]
+        "scripts": ["neut-common/src/event_page.js"]
     },
     "content_scripts": [{
       "matches": ["*://*/*"],
-      "js": ["src/content_script.js"]
+      "js": ["neut-common/src/content_script.js"]
     }],
     "browser_action": {
-        "default_icon": "img/neut.png",
-        "default_popup": "src/popup.html"
+        "default_icon": "neut-common/src/neut.png",
+        "default_popup": "neut-common/src/popup.html"
     },
     "permissions": [
         "storage"
