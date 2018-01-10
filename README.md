@@ -1,4 +1,4 @@
-# Neut-chrome
+# Neut agent for Chrome
 
 Lightweight extension that measures how fast your web pages are loading.
 Suitable for low-power devices. Includes only network part of the base page load,
