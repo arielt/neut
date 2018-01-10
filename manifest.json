@@ -1,6 +1,6 @@
 {
     "name": "Neut",
-    "description": "Neut agent for Chrome browser",
+    "description": "Neut agent for Chrome",
     "version": "0.1",
     "icons": {
         "128": "neut-common/src/neut.png"
